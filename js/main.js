@@ -1,5 +1,7 @@
 (() => {
 
+    let yOffset = 0; // window.pageYOffset을 저장할 변수
+
     const sceneInfo = [
         {
             // scroll-section-0
@@ -46,7 +48,17 @@
             sceneInfo[i].objs.container.style.height = `${sceneInfo[i].scrollHeight}px`;
         }
     }
-    window.addEventListener('resize', setLayout);
+
+    function scrollLoop() {
+        console.log(yOffset);
+    }
+
+    window.addEventListener('resize', setLayout); // 화면 크기가 변경되면 실행
+    window.addEventListener('scroll', () => {
+        yOffset = window.pageYOffset; // 현재 스크롤 되고 있는 위치
+        scrollLoop();
+    });
+
     setLayout();
 
 })();
