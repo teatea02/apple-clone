@@ -1,6 +1,8 @@
 (() => {
 
     let yOffset = 0; // window.pageYOffset을 저장할 변수
+    let prevScrollHeight = 0; // 현재 스크롤 위치 보다 이전에 위치한 스크롤 섹션들의 높이의 합
+    let currentScene = 0; // 현재 스크롤이 위치한 scene의 번호
 
     const sceneInfo = [
         {
@@ -50,7 +52,17 @@
     }
 
     function scrollLoop() {
-        console.log(yOffset);
+        prevScrollHeight = 0;
+        for (let i = 0; i < currentScene; i++) {
+            prevScrollHeight += sceneInfo[i].scrollHeight;
+        }
+
+        if (yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
+            currentScene++;
+        } else if (yOffset < prevScrollHeight) {
+            if (currentScene === 0) return;
+            currentScene--;
+        }
     }
 
     window.addEventListener('resize', setLayout); // 화면 크기가 변경되면 실행
