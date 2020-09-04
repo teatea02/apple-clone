@@ -3,6 +3,7 @@
     let yOffset = 0; // window.pageYOffset을 저장할 변수
     let prevScrollHeight = 0; // 현재 스크롤 위치 보다 이전에 위치한 스크롤 섹션들의 높이의 합
     let currentScene = 0; // 현재 스크롤이 위치한 scene의 번호
+    let enterNewScene = false; // 새로운 scene이 시작된 순간 true
 
     const sceneInfo = [
         {
@@ -70,39 +71,61 @@
         document.body.setAttribute('id', `show-scene-${currentScene}`);
     }
 
+    function calcValues(values, currentYOffset) {
+        let rv;
+        let scrollRatio = currentYOffset / sceneInfo[currentScene].scrollHeight;
+
+        rv = scrollRatio * (values[1] - values[0]) + values[0];
+
+        return rv;
+    }
+
     function playAnimation() {
+
+        const values = sceneInfo[currentScene].values;
+        const objs = sceneInfo[currentScene].objs;
+        const currentYOffset = yOffset - prevScrollHeight;
+
         switch (currentScene) {
             case 0:
-                console.log('0 play');
+                // console.log('0 play');
+                let messageA_opacity_in = calcValues(values.messageA_opacity, currentYOffset);
+                objs.messageA.style.opacity = messageA_opacity_in;
+                // console.log(currentScene, messageA_opacity_in)
                 break;
 
             case 1:
-                console.log('1 play');
+                // console.log('1 play');
                 break;
 
             case 2:
-                console.log('2 play');
+                // console.log('2 play');
                 break;
 
             case 3:
-                console.log('3 play');
+                // console.log('3 play');
                 break;
         }
     }
 
     function scrollLoop() {
+        enterNewScene = false;
         prevScrollHeight = 0;
         for (let i = 0; i < currentScene; i++) {
             prevScrollHeight += sceneInfo[i].scrollHeight;
         }
 
         if (yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
+            enterNewScene = true;
             currentScene++;
         } else if (yOffset < prevScrollHeight) {
+            enterNewScene = true;
             if (currentScene === 0) return; // 웹 브라우저의 bounce 효과로 scroll이 음수값이 되는것을 방지
             currentScene--;
         }
         document.body.setAttribute('id', `show-scene-${currentScene}`);
+
+        if (enterNewScene) return; // scene이 바뀌는 순간에는 playAnimation을 실행하지 않음
         playAnimation();
     }
 
