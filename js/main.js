@@ -154,7 +154,6 @@
 
         switch (currentScene) {
             case 0:
-                // console.log('0 play');
                 
                 if (scrollRatio <= 0.22) {
                     // in
@@ -200,11 +199,11 @@
                 break;
 
             case 1:
-                // console.log('1 play');
+
                 break;
 
             case 2:
-                // console.log('2 play');
+
 
                 if (scrollRatio <= 0.32) {
                     // in
@@ -243,7 +242,7 @@
                 break;
 
             case 3:
-                // console.log('3 play');
+                
                 break;
         }
     }
